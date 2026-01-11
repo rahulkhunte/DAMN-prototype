@@ -1,0 +1,17 @@
+﻿
+Environment variables (NEVER commit!)
+.env
+
+Python
+pycache/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+
+IDE
+.vscode/
+.idea/
+
+OS
+.DS_Store
+Thumbs.db
