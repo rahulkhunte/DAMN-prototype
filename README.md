@@ -64,7 +64,6 @@ cp .env.example .env
 # Run demo
 jupyter notebook demo.ipynb
 
-```
 📁 Repository Structure
 DAMN-prototype/
 ├── README.md              # This file
