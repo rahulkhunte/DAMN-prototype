@@ -65,24 +65,18 @@ cp .env.example .env
 jupyter notebook demo.ipynb
 
 
-```md
 ---
 
 ## 📁 Repository Structure
 ```text
 DAMN-prototype/
-├── README.md              # This file
-├── DAMN.sol               # Smart contract source
-├── demo.ipynb             # Jupyter notebook demo
-├── requirements.txt       # Python dependencies
-├── .env.example           # Environment template
-├── .gitignore             # Git ignore rules
-└── demos/                 # Screenshots
-    ├── blockchain_transaction.png
-    ├── contract_verification.png
-    ├── ipfs_storage.png
-    ├── multi_agent_demo.png
-    └── network_stats.png
+├── README.md
+├── DAMN.sol
+├── demo.ipynb
+├── requirements.txt
+├── .env.example
+└── demos/
+
 
 🎯 Use Cases
 Autonomous Drones: Swarm coordination without central server
