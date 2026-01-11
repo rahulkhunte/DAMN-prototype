@@ -63,10 +63,8 @@ cp .env.example .env
 
 # Run demo
 jupyter notebook demo.ipynb
-
-
 📁 Repository Structure
-
+text
 DAMN-prototype/
 ├── README.md              # This file
 ├── DAMN.sol               # Smart contract source
@@ -80,7 +78,6 @@ DAMN-prototype/
     ├── ipfs_storage.png
     ├── multi_agent_demo.png
     └── network_stats.png
-
 🎯 Use Cases
 Autonomous Drones: Swarm coordination without central server
 
@@ -140,4 +137,3 @@ Ethereum Foundation (Sepolia testnet)
 Pinata (IPFS infrastructure)
 
 Built for TiHAN IIT Hyderabad R&D Proposal | January 2026
-
