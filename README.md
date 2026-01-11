@@ -54,6 +54,17 @@ DAMN enables autonomous AI agents and robots to **store, share, and reuse learne
 git clone https://github.com/rahulkhunte/DAMN-prototype.git
 cd DAMN-prototype
 
+# Install dependencies
+pip install -r requirements.txt
+
+# Setup environment
+cp .env.example .env
+# Edit .env with your credentials
+
+# Run demo
+jupyter notebook demo.ipynb
+
+
 📁 Repository Structure
 
 DAMN-prototype/
