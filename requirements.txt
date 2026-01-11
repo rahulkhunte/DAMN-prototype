@@ -1,0 +1,4 @@
+﻿web3==6.11.3
+python-dotenv==1.0.0
+requests==2.31.0
+jupyter==1.0.0
