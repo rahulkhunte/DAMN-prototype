@@ -45,29 +45,17 @@ DAMN enables autonomous AI agents and robots to **store, share, and reuse learne
 ## 🎬 Quick Start
 
 ### Prerequisites
-```bash
-# Get Sepolia ETH (free faucet)
-https://sepoliafaucet.com
+- **Sepolia ETH:** Get free testnet tokens from [sepoliafaucet.com](https://sepoliafaucet.com)
+- **Pinata Account:** Sign up for free at [pinata.cloud](https://pinata.cloud)
 
-# Create Pinata account (free)
-https://pinata.cloud
-Setup
-bash
+### Setup
+```bash
 # Clone repo
 git clone https://github.com/rahulkhunte/DAMN-prototype.git
 cd DAMN-prototype
 
-# Install dependencies
-pip install -r requirements.txt
-
-# Setup environment
-cp .env.example .env
-# Edit .env with your credentials
-
-# Run demo
-jupyter notebook demo.ipynb
 📁 Repository Structure
-text
+
 DAMN-prototype/
 ├── README.md              # This file
 ├── DAMN.sol               # Smart contract source
@@ -81,6 +69,7 @@ DAMN-prototype/
     ├── ipfs_storage.png
     ├── multi_agent_demo.png
     └── network_stats.png
+
 🎯 Use Cases
 Autonomous Drones: Swarm coordination without central server
 
@@ -140,3 +129,4 @@ Ethereum Foundation (Sepolia testnet)
 Pinata (IPFS infrastructure)
 
 Built for TiHAN IIT Hyderabad R&D Proposal | January 2026
+
