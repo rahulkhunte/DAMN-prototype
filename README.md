@@ -64,14 +64,19 @@ cp .env.example .env
 # Run demo
 jupyter notebook demo.ipynb
 
-📁 Repository Structure
+
+```md
+---
+
+## 📁 Repository Structure
+```text
 DAMN-prototype/
 ├── README.md              # This file
 ├── DAMN.sol               # Smart contract source
 ├── demo.ipynb             # Jupyter notebook demo
 ├── requirements.txt       # Python dependencies
 ├── .env.example           # Environment template
-├── .gitignore            # Git ignore rules
+├── .gitignore             # Git ignore rules
 └── demos/                 # Screenshots
     ├── blockchain_transaction.png
     ├── contract_verification.png
