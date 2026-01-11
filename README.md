@@ -63,9 +63,8 @@ cp .env.example .env
 
 # Run demo
 jupyter notebook demo.ipynb
+```
 
-
----
 
 ## 📁 Repository Structure
 ```text
