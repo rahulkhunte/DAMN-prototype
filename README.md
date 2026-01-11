@@ -64,7 +64,7 @@ cp .env.example .env
 # Run demo
 jupyter notebook demo.ipynb
 ```
-📁 Repository Structure
+## 📁 Repository Structure
 DAMN-prototype/
 ├── README.md              
 ├── DAMN.sol               
@@ -80,9 +80,7 @@ DAMN-prototype/
     └── network_stats.png
 
 
-
-
-🎯 Use Cases
+## 🎯 Use Cases
 Autonomous Drones: Swarm coordination without central server
 
 Robotics: Manufacturing robots sharing assembly techniques
@@ -93,7 +91,7 @@ Space Exploration: Mars rovers sharing terrain navigation data
 
 Smart Cities: IoT devices learning optimal traffic patterns
 
-🔬 TiHAN IIT Hyderabad R&D Proposal
+## 🔬 TiHAN IIT Hyderabad R&D Proposal
 This project is submitted to TiHAN - IIT Hyderabad for R&D funding under autonomous systems research.
 
 Proposed Goals:
