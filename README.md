@@ -64,7 +64,7 @@ cp .env.example .env
 # Run demo
 jupyter notebook demo.ipynb
 
-```bash
+```
 📁 Repository Structure
 DAMN-prototype/
 ├── README.md              # This file
@@ -79,6 +79,7 @@ DAMN-prototype/
     ├── ipfs_storage.png
     ├── multi_agent_demo.png
     └── network_stats.png
+
 🎯 Use Cases
 Autonomous Drones: Swarm coordination without central server
 
