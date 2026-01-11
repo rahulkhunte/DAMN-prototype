@@ -63,8 +63,9 @@ cp .env.example .env
 
 # Run demo
 jupyter notebook demo.ipynb
-##📁 Repository Structure
-text
+
+```bash
+📁 Repository Structure
 DAMN-prototype/
 ├── README.md              # This file
 ├── DAMN.sol               # Smart contract source
@@ -120,20 +121,25 @@ Deploy on TiHAN UAV testbed
 📄 License
 MIT License
 
-👤 Developer
-Rahul Khunte
-AI/ML & Blockchain Developer | B.Tech Civil Engineering (2022) | BIT Raipur
+---
 
-📧 rahulk.rk903@gmail.com
-🔗 Portfolio | GitHub
+## 👤 Developer
 
-🙏 Acknowledgments
-TiHAN - IIT Hyderabad (for research opportunity)
+**Rahul Khunte**  
+AI/ML & Blockchain Developer | B.Tech Civil Engineering (2022) | BIT Raipur  
 
-Lightning AI (for GPU compute)
+📧 Email: [rahulk.rk903@gmail.com](mailto:rahulk.rk903@gmail.com)  
+🔗 GitHub: https://github.com/rahulkhunte  
+🌐 Portfolio: https://rahulkhunte.github.io/portfolio/  
 
-Ethereum Foundation (Sepolia testnet)
+---
 
-Pinata (IPFS infrastructure)
+## 🙏 Acknowledgments
 
-Built for TiHAN IIT Hyderabad R&D Proposal | January 2026
+- TiHAN – IIT Hyderabad (for research opportunity)  
+- Lightning AI (for GPU compute)  
+- Ethereum Foundation (Sepolia testnet)  
+- Pinata (IPFS infrastructure)  
+
+Built for **TiHAN IIT Hyderabad R&D Proposal | January 2026**
+
