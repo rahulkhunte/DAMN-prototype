@@ -107,15 +107,11 @@ DAMN-prototype/
 ```
 
 ## 🎯 Use Cases
-Autonomous Drones: Swarm coordination without central server
-
-Robotics: Manufacturing robots sharing assembly techniques
-
-Healthcare: Surgical robots learning from collective experiences
-
-Space Exploration: Mars rovers sharing terrain navigation data
-
-Smart Cities: IoT devices learning optimal traffic patterns
+- **Autonomous Drones:** Swarm coordination without central server  
+- **Robotics:** Manufacturing robots sharing assembly techniques  
+- **Healthcare:** Surgical robots learning from collective experiences  
+- **Space Exploration:** Mars rovers sharing terrain navigation data  
+- **Smart Cities:** IoT devices learning optimal traffic patterns  
 
 ## 🔬 TiHAN IIT Hyderabad R&D Proposal
 This project is being prepared for submission to
