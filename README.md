@@ -124,6 +124,23 @@ MIT License
 
 ---
 
+## 🧬 Q-DAMN: Quantum-Ready Extension (Future Work)
+
+DAMN is designed to be quantum-ready.
+
+In future research phases, we will explore hybrid quantum–classical methods
+to enhance DAMN through:
+
+- Post-quantum cryptography for memory authentication  
+- Quantum-inspired optimization for memory retrieval  
+- Hybrid simulation using Qiskit and quantum simulators  
+
+Status:
+- DAMN: Implemented and deployed  
+- Q-DAMN: Research-phase extension (not production yet)
+
+
+
 ## 👤 Developer
 
 **Rahul Khunte**  
