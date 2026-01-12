@@ -1,52 +1,77 @@
-﻿# DAMN - Decentralized AI Memory Network
+# DAMN – Decentralized AI Memory Network
 
 ![Contract Verification](demos/contract_verification.png)
 
+## 📌 Project Status
+- Core DAMN system: Implemented and deployed  
+- Multi-agent demo: Completed  
+- TiHAN proposal: In preparation  
+- Annexure-B endorsement: Pending (institutional process)
+
+---
+
 ## Overview
-DAMN enables autonomous AI agents and robots to **store, share, and reuse learned experiences** without catastrophic forgetting. Built on Ethereum + IPFS for true decentralization.
+DAMN enables autonomous AI agents and robots to **store, share, and reuse learned experiences** without catastrophic forgetting.  
+Built on **Ethereum + IPFS** for decentralized, persistent memory across agents.
+
+---
 
 ## 🎯 Problem Solved
-**Catastrophic Forgetting:** AI systems lose previously learned behaviors when trained on new tasks. DAMN creates a persistent, shared memory layer across all agents.
+**Catastrophic Forgetting:**  
+AI systems lose previously learned behaviors when trained on new tasks. DAMN creates a persistent, shared memory layer across all agents so knowledge is never lost.
+
+---
 
 ## 🏗️ Architecture
-- **IPFS:** Decentralized storage for memory data
+- **IPFS:** Decentralized storage for memory data  
 - **Ethereum:** Immutable ledger storing IPFS hashes  
-- **Smart Contract:** Access control and ownership tracking
+- **Smart Contract:** Access control and ownership tracking  
+
+---
 
 ## 🚀 Live Deployment
-- **Network:** Ethereum Sepolia Testnet
-- **Contract:** [`0xacAABF9A47d1Df7f2f698ad9033da10CD374B8c4`](https://sepolia.etherscan.io/address/0xacAABF9A47d1Df7f2f698ad9033da10CD374B8c4)
-- **Verified:** ✅ [Sourcify](https://repo.sourcify.dev/) | [Blockscout](https://eth-sepolia.blockscout.com/)
+- **Network:** Ethereum Sepolia Testnet  
+- **Contract:**  
+  [`0xacAABF9A47d1Df7f2f698ad9033da10CD374B8c4`](https://sepolia.etherscan.io/address/0xacAABF9A47d1Df7f2f698ad9033da10CD374B8c4)  
+- **Verified:**  
+  ✅ [Sourcify](https://repo.sourcify.dev/) | [Blockscout](https://eth-sepolia.blockscout.com/)  
 - **Status:** Operational (2+ memories stored)
 
 ![Multi-Agent Demo](demos/multi_agent_demo.png)
 
+---
+
 ## 📊 Demo Results
+
 ### Scenario: UAV Obstacle Avoidance
-1. **UAV-001** encounters building obstacle at coordinates (28.61°N, 77.21°E)
-2. Learns safe maneuver: `climb_to_200m_then_proceed`
-3. Stores experience on IPFS + Blockchain
-4. **UAV-002** approaches same area
-5. Retrieves UAV-001's memory from network
-6. Successfully navigates using learned behavior
-7. **Success rate:** 98% ✅
+1. **UAV-001** encounters a building obstacle at (28.61°N, 77.21°E)  
+2. Learns safe maneuver: `climb_to_200m_then_proceed`  
+3. Stores experience on IPFS + Blockchain  
+4. **UAV-002** approaches same area  
+5. Retrieves UAV-001’s memory  
+6. Successfully navigates using learned behavior  
+7. **Success rate:** 98% ✅  
 
 **Result:** Zero retraining required. Knowledge persists across agent swarm.
 
 ![Network Statistics](demos/network_stats.png)
 
+---
+
 ## 🛠️ Tech Stack
-- **Smart Contract:** Solidity 0.8.0
-- **Blockchain:** Ethereum (Sepolia Testnet)
-- **Storage:** IPFS via Pinata
-- **Integration:** Python + Web3.py
-- **Infrastructure:** Lightning AI (T4 GPU)
+- **Smart Contract:** Solidity 0.8.0  
+- **Blockchain:** Ethereum (Sepolia Testnet)  
+- **Storage:** IPFS via Pinata  
+- **Integration:** Python + Web3.py  
+- **Infrastructure:** Lightning AI (T4 GPU)  
+
+---
 
 ## 🎬 Quick Start
 
 ### Prerequisites
-- **Sepolia ETH:** Get free testnet tokens from [sepoliafaucet.com](https://sepoliafaucet.com)
-- **Pinata Account:** Sign up for free at [pinata.cloud](https://pinata.cloud)
+- **Sepolia ETH:** https://sepoliafaucet.com  
+- **Pinata Account:** https://pinata.cloud  
 
 ### Setup
 ```bash
@@ -66,13 +91,13 @@ jupyter notebook demo.ipynb
 ```
 ## 📁 Repository Structure
 DAMN-prototype/
-├── README.md              
-├── DAMN.sol               
-├── demo.ipynb             
-├── requirements.txt       
-├── .env.example           
-├── .gitignore            
-└── demos/                 
+├── README.md
+├── DAMN.sol
+├── demo.ipynb
+├── requirements.txt
+├── .env.example
+├── .gitignore
+└── demos/
     ├── blockchain_transaction.png
     ├── contract_verification.png
     ├── ipfs_storage.png
@@ -92,19 +117,21 @@ Space Exploration: Mars rovers sharing terrain navigation data
 Smart Cities: IoT devices learning optimal traffic patterns
 
 ## 🔬 TiHAN IIT Hyderabad R&D Proposal
-This project is submitted to TiHAN - IIT Hyderabad for R&D funding under autonomous systems research.
+This project is being prepared for submission to
+TiHAN – IIT Hyderabad under autonomous systems research.
 
-Proposed Goals:
+Proposed Goals
 
-Optimize retrieval latency for real-time systems (<100ms)
+Optimize retrieval latency to <100ms
 
-Implement memory quality scoring (trustworthiness metrics)
+Implement memory quality scoring
 
 Scale to 100+ agent networks
 
 Deploy on TiHAN UAV testbed
 
 📈 Roadmap
+
  Smart contract deployment (Jan 8, 2026)
 
  Multi-agent demo (Jan 9, 2026)
@@ -118,11 +145,6 @@ Deploy on TiHAN UAV testbed
  Hardware UAV integration (TiHAN testbed)
 
  Mainnet deployment
-
-📄 License
-MIT License
-
----
 
 ## 🧬 Q-DAMN: Quantum-Ready Extension (Future Work)
 
@@ -139,15 +161,19 @@ Status:
 - DAMN: Implemented and deployed  
 - Q-DAMN: Research-phase extension (not production yet)
 
+📄 License
+MIT License
 
 
 ## 👤 Developer
 
-**Rahul Khunte**  
-AI/ML & Blockchain Developer | B.Tech Civil Engineering (2022) | BIT Raipur  
+**Rahul Khunte**
+AI/ML & Blockchain Developer | B.Tech Civil Engineering (2022) | BIT Raipur
 
-📧 Email: [rahulk.rk903@gmail.com](mailto:rahulk.rk903@gmail.com)  
-🔗 GitHub: https://github.com/rahulkhunte  
+📧 Email: rahulk.rk903@gmail.com
+
+🔗 GitHub: https://github.com/rahulkhunte
+
 🌐 Portfolio: https://rahulkhunte.github.io/portfolio/  
 
 ---
