@@ -163,7 +163,7 @@ Status:
 
 📄 License
 MIT License
-
+---
 
 ## 👤 Developer
 
