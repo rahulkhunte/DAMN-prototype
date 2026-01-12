@@ -131,7 +131,7 @@ Scale to 100+ agent networks
 
 Deploy on TiHAN UAV testbed
 
-📈 Roadmap
+## 📈 Roadmap
 
  Smart contract deployment (Jan 8, 2026)
 
