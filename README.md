@@ -1,12 +1,15 @@
 # DAMN – Decentralized AI Memory Network
 
+> **Note:** Built independently in January 2026. Similar architecture now being deployed by [Nethermind's ChaosChain](https://docs.chaoscha.in/) for autonomous agent accountability using Ethereum + IPFS + DKG patterns.
+
+
 ![Contract Verification](demos/contract_verification.png)
 
 ## 📌 Project Status
-- Core DAMN system: Implemented and deployed  
-- Multi-agent demo: Completed  
-- TiHAN proposal: In preparation  
-- Annexure-B endorsement: Pending (institutional process)
+- ✅ Core DAMN system: Implemented and deployed
+- ✅ Multi-agent demo: Completed  
+- 🚀 Exploring production deployment & partnerships
+- 📝 Available for collaboration/research opportunities
 
 ---
 
