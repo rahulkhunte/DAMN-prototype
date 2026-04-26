@@ -2,3 +2,7 @@
 python-dotenv==1.0.0
 requests==2.31.0
 jupyter==1.0.0
+mcp==1.3.0
+fastapi==0.115.0
+uvicorn==0.29.0
+pinatapy-unofficial==0.1.2

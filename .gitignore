@@ -1,17 +1,9 @@
-﻿
-Environment variables (NEVER commit!)
-.env
+﻿# Node / Hardhat
+node_modules/
+artifacts/
+cache/
+typechain-types/
 
-Python
-pycache/
-*.py[cod]
-*$py.class
-.ipynb_checkpoints/
-
-IDE
-.vscode/
-.idea/
-
-OS
-.DS_Store
-Thumbs.db
+# MCP server
+__pycache__/
+*.pyc
