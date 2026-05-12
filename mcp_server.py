@@ -1,102 +1,212 @@
-"""
-DAMN MCP Server — exposes DAMN as a tool for OpenClaw, LangChain, AutoGen
-Run: uvicorn mcp_server:app --host 0.0.0.0 --port 8000
-"""
-import os, hashlib, requests, time
-from fastapi import FastAPI
+# mcp_server.py — DAMN v2.1 — fixed all issues
+import os, time, json, requests
+from fastapi import FastAPI, Request, Response
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from web3 import Web3
+from typing import List, Optional
 from dotenv import load_dotenv
-import json
 
 load_dotenv()
 
-app = FastAPI(title="DAMN MCP Server", version="1.0.0")
+app = FastAPI(title="DAMN - Decentralized AI Memory Network")
+PINATA_JWT = os.getenv("PINATA_JWT")
+PROXY_SECRET = os.getenv("AGENTICMARKET_SECRET", "")
+HEADERS = {"Authorization": f"Bearer {PINATA_JWT}"}
 
-# --- Config ---
-w3 = Web3(Web3.HTTPProvider(os.getenv("POLYGON_RPC", "https://polygon-rpc.com")))
-PINATA_KEY    = os.getenv("PINATA_API_KEY")
-PINATA_SECRET = os.getenv("PINATA_API_SECRET")
-CONTRACT_ADDR = os.getenv("CONTRACT_ADDRESS_POLYGON")
-PRIVATE_KEY   = os.getenv("PRIVATE_KEY")
-account       = w3.eth.account.from_key(PRIVATE_KEY)
+# ── FIX #1: Persist memory_index to disk ──────────────────────
+INDEX_FILE = "/home/ubuntu/DAMN-prototype/memory_index.json"
 
-# Minimal ABI — only what MCP needs
-ABI = [
-    {"inputs":[{"type":"bytes32"},{"type":"string"},{"type":"string"},{"type":"string"}],
-     "name":"storeMemory","outputs":[],"stateMutability":"nonpayable","type":"function"},
-    {"inputs":[{"type":"bytes32"}],"name":"retrieveMemory",
-     "outputs":[{"type":"string"}],"stateMutability":"view","type":"function"}
+def load_index():
+    if os.path.exists(INDEX_FILE):
+        with open(INDEX_FILE) as f:
+            return json.load(f)
+    return {}
+
+def save_index(index):
+    with open(INDEX_FILE, "w") as f:
+        json.dump(index, f)
+
+memory_index = load_index()
+
+app.add_middleware(CORSMiddleware,
+    allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+
+@app.middleware("http")
+async def verify_proxy(request: Request, call_next):
+    open_paths = ["/health", "/", "/mcp", "/docs", "/openapi.json", "/tools"]
+    if any(request.url.path.startswith(p) for p in open_paths):
+        return await call_next(request)
+    if PROXY_SECRET and request.headers.get("X-AgenticMarket-Secret") != PROXY_SECRET:
+        client_host = request.client.host if request.client else "unknown"
+        if client_host not in ("127.0.0.1", "localhost"):
+            return Response("Unauthorized", status_code=401)
+    return await call_next(request)
+
+# ── IPFS helpers ───────────────────────────────────────────────
+def pin_to_ipfs(data: dict) -> str:
+    res = requests.post(
+        "https://api.pinata.cloud/pinning/pinJSONToIPFS",
+        json={"pinataContent": data,
+              "pinataMetadata": {"name": f"DAMN-{int(time.time())}"}},
+        headers=HEADERS, timeout=15)
+    res.raise_for_status()
+    return res.json()["IpfsHash"]
+
+def fetch_from_ipfs(cid: str) -> dict:
+    res = requests.get(f"https://gateway.pinata.cloud/ipfs/{cid}", timeout=15)
+    res.raise_for_status()
+    return res.json()
+
+# ── FIX #2: Pydantic models for Swagger ───────────────────────
+class StoreMemoryRequest(BaseModel):
+    content: str
+    tags: Optional[List[str]] = []
+
+class RetrieveMemoryRequest(BaseModel):
+    memory_id: str
+
+class SearchMemoryRequest(BaseModel):
+    query: str
+
+# ── MCP Tools definition ───────────────────────────────────────
+MCP_TOOLS = [
+    {"name": "store_memory",
+     "description": "Store a memory permanently on IPFS via Pinata. Returns memory_id and IPFS CID.",
+     "inputSchema": {"type": "object",
+         "properties": {
+             "content": {"type": "string"},
+             "tags": {"type": "array", "items": {"type": "string"}}},
+         "required": ["content"]}},
+    {"name": "retrieve_memory",
+     "description": "Retrieve a memory from IPFS by its memory_id.",
+     "inputSchema": {"type": "object",
+         "properties": {"memory_id": {"type": "string"}},
+         "required": ["memory_id"]}},
+    {"name": "list_memories",
+     "description": "List all stored memory IDs, tags, and IPFS CIDs.",
+     "inputSchema": {"type": "object", "properties": {}}},
+    {"name": "search_memories",
+     "description": "Search stored memories by tag keyword.",
+     "inputSchema": {"type": "object",
+         "properties": {"query": {"type": "string"}},
+         "required": ["query"]}}
 ]
-contract = w3.eth.contract(address=CONTRACT_ADDR, abi=ABI)
 
-def to_bytes32(agent_id: str, ts: int) -> bytes:
-    return hashlib.sha256(f"{agent_id}_{ts}".encode()).digest()
+# ── MCP JSON-RPC handler ───────────────────────────────────────
+@app.post("/mcp")
+async def mcp_endpoint(request: Request):
+    body = await request.json()
+    method = body.get("method", "")
+    req_id = body.get("id", 1)
 
-def ipfs_pin(data: dict, name: str) -> str:
-    r = requests.post("https://api.pinata.cloud/pinning/pinJSONToIPFS",
-        json={"pinataContent": data, "pinataMetadata": {"name": name}},
-        headers={"pinata_api_key": PINATA_KEY,
-                 "pinata_secret_api_key": PINATA_SECRET})
-    return r.json()["IpfsHash"]
+    if method == "initialize":
+        return {"jsonrpc": "2.0", "id": req_id,
+                "result": {"protocolVersion": "2024-11-05",
+                           "capabilities": {"tools": {}},
+                           "serverInfo": {"name": "DAMN Memory", "version": "2.1"}}}
 
-def ipfs_get(cid: str) -> dict:
-    return requests.get(f"https://gateway.pinata.cloud/ipfs/{cid}").json()
+    elif method == "tools/list":
+        return {"jsonrpc": "2.0", "id": req_id, "result": {"tools": MCP_TOOLS}}
 
-# --- MCP Tool Models ---
-class StoreRequest(BaseModel):
-    agent_id: str
-    content: dict
-    task_type: str = "general"
+    elif method == "tools/call":
+        params = body.get("params", {})
+        tool = params.get("name", "")
+        args = params.get("arguments", {})
+        try:
+            result = await handle_tool(tool, args)
+            return {"jsonrpc": "2.0", "id": req_id,
+                    "result": {"content": [{"type": "text", "text": str(result)}]}}
+        except Exception as e:
+            return {"jsonrpc": "2.0", "id": req_id,
+                    "error": {"code": -32603, "message": str(e)}}
 
-class RecallRequest(BaseModel):
-    agent_id: str
-    timestamp: int  # unix ts of the memory to recall
+    elif method == "notifications/initialized":
+        return {"jsonrpc": "2.0", "id": req_id, "result": {}}
 
-# --- MCP Endpoints (tools) ---
-@app.get("/tools")
-def list_tools():
-    """MCP tool manifest — OpenClaw reads this"""
-    return {"tools": [
-        {"name": "remember", "description": "Store agent memory on IPFS + Polygon blockchain",
-         "input_schema": StoreRequest.schema()},
-        {"name": "recall",   "description": "Retrieve agent memory by agent_id + timestamp",
-         "input_schema": RecallRequest.schema()}
-    ]}
+    return {"jsonrpc": "2.0", "id": req_id,
+            "error": {"code": -32601, "message": f"Method not found: {method}"}}
 
-@app.post("/tools/remember")
-def remember(req: StoreRequest):
-    """Store memory — costs ~$0.001 gas on Polygon"""
-    ts  = int(time.time())
-    cid = ipfs_pin({"agent_id": req.agent_id, "data": req.content,
-                    "task": req.task_type, "ts": ts}, req.agent_id)
-    mem_id = to_bytes32(req.agent_id, ts)
+# ── Shared tool logic ──────────────────────────────────────────
+async def handle_tool(tool: str, args: dict):
+    global memory_index
+    if tool == "store_memory":
+        content = args.get("content", "")
+        tags = args.get("tags", [])
+        data = {"content": content, "tags": tags,
+                "timestamp": int(time.time()), "version": "DAMN-v2"}
+        cid = pin_to_ipfs(data)
+        memory_id = f"mem_{int(time.time())}"
+        memory_index[memory_id] = {"cid": cid, "tags": tags, "timestamp": data["timestamp"]}
+        save_index(memory_index)  # FIX #1: persist
+        return {"memory_id": memory_id, "ipfs_cid": cid,
+                "gateway_url": f"https://gateway.pinata.cloud/ipfs/{cid}", "permanent": True}
 
-    nonce = w3.eth.get_transaction_count(account.address)
-    txn   = contract.functions.storeMemory(
-        mem_id, cid, req.agent_id, req.task_type
-    ).build_transaction({
-        "from": account.address, "nonce": nonce,
-        "gas": 200000, "gasPrice": w3.eth.gas_price, "chainId": 137
-    })
-    signed = account.sign_transaction(txn)
-    tx     = w3.eth.send_raw_transaction(signed.raw_transaction)
-    receipt = w3.eth.wait_for_transaction_receipt(tx, timeout=120)
+    elif tool == "retrieve_memory":
+        mid = args.get("memory_id", "")
+        if mid not in memory_index:
+            return {"error": f"Memory {mid} not found"}
+        cid = memory_index[mid]["cid"]
+        return {"memory_id": mid, "ipfs_cid": cid, "data": fetch_from_ipfs(cid)}
 
-    return {"status": "stored", "cid": cid,
-            "tx": tx.hex(), "gas_used": receipt["gasUsed"]}
+    elif tool == "list_memories":
+        return {"total": len(memory_index),
+                "memories": [{"memory_id": k, "tags": v["tags"],
+                               "timestamp": v["timestamp"], "cid": v["cid"]}
+                              for k, v in memory_index.items()]}
 
-@app.post("/tools/recall")
-def recall(req: RecallRequest):
-    """Recall memory — FREE, no gas"""
-    mem_id = to_bytes32(req.agent_id, req.timestamp)
-    cid    = contract.functions.retrieveMemory(mem_id).call()
-    if not cid:
-        return {"status": "not_found"}
-    data = ipfs_get(cid)
-    return {"status": "found", "cid": cid, "memory": data}
+    elif tool == "search_memories":
+        query = args.get("query", "").lower()
+        results = [{"memory_id": mid, "tags": meta["tags"], "cid": meta["cid"]}
+                   for mid, meta in memory_index.items()
+                   if any(query in tag.lower() for tag in meta["tags"])]
+        return {"results": results, "count": len(results)}
+
+    raise ValueError(f"Unknown tool: {tool}")
+
+# ── REST endpoints (FIX #2: Pydantic + FIX #4: all 4 tools) ───
+@app.get("/")
+def root():
+    return {"name": "DAMN Memory", "version": "2.1",
+            "mcp_endpoint": "/mcp", "health": "/health"}
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "chain": "polygon",
-            "block": w3.eth.block_number, "contract": CONTRACT_ADDR}
+    try:
+        r = requests.get("https://api.pinata.cloud/data/testAuthentication",
+                         headers=HEADERS, timeout=5)
+        pinata_ok = r.status_code == 200
+    except:
+        pinata_ok = False
+
+    # Check pin count
+    try:
+        pins = requests.get("https://api.pinata.cloud/data/pinList?status=pinned&pageLimit=1",
+                            headers=HEADERS, timeout=5)
+        pin_count = pins.json().get("count", 0)
+    except:
+        pin_count = -1
+
+    return {"status": "running", "memories_cached": len(memory_index),
+            "storage": "IPFS via Pinata", "pinata_connected": pinata_ok,
+            "pinata_pins_used": pin_count, "pinata_pins_limit": 500,
+            "chain": "coming_soon"}
+
+@app.get("/tools")
+def list_tools():
+    return {"tools": [{"name": t["name"], "description": t["description"]} for t in MCP_TOOLS]}
+
+@app.post("/tools/store_memory")
+async def store_memory_rest(req: StoreMemoryRequest):  # FIX #2
+    return await handle_tool("store_memory", {"content": req.content, "tags": req.tags})
+
+@app.post("/tools/retrieve_memory")  # FIX #4
+async def retrieve_memory_rest(req: RetrieveMemoryRequest):
+    return await handle_tool("retrieve_memory", {"memory_id": req.memory_id})
+
+@app.get("/tools/list_memories")  # FIX #4
+async def list_memories_rest():
+    return await handle_tool("list_memories", {})
+
+@app.post("/tools/search_memories")  # FIX #4
+async def search_memories_rest(req: SearchMemoryRequest):
+    return await handle_tool("search_memories", {"query": req.query})
