@@ -18,6 +18,8 @@
 - ✅ Multi-agent demo: Completed
 - ✅ MCP server: Built (OpenClaw / LangChain / AutoGen compatible)
 - ✅ Gas-optimized contract: Batch writes, 80% cheaper
+- ✅ Self-hosted IPFS node (Kubo): Hybrid pinning — local node primary, Pinata backup
+- ✅ Test suite: 14 tests covering auth, MCP protocol, and storage roundtrips
 - 🚀 Polygon mainnet deployment: In progress
 - 📝 Available for collaboration / research / integration
 
@@ -115,7 +117,7 @@ flowchart TB
 | MCP Server | Standard interface for any agent framework | FastAPI, Python |
 | Agent Layer | Autonomous systems (UAVs, robots, AI agents) | Any language |
 | Python Client | IPFS upload + blockchain interaction | web3.py, requests |
-| IPFS Storage | Stores actual memory payloads (JSON) | Pinata cloud pinning |
+| IPFS Storage | Hybrid pinning: self-hosted Kubo node (primary) + Pinata (backup replication) | Kubo (Docker) + Pinata |
 | Smart Contract | Immutable CID index — lightweight, gas-optimized | Solidity 0.8.20, Polygon |
 
 ### Gas Cost Design
@@ -180,7 +182,7 @@ Your $5 in MATIC = ~3,000–5,000 memory writes
 |-------|------------|
 | Smart Contract | Solidity 0.8.20, gas-optimized (bytes32 keys, batch writes) |
 | Blockchain | Polygon PoS Mainnet / Ethereum Sepolia (testnet) |
-| Storage | IPFS via Pinata |
+| Storage | IPFS — self-hosted Kubo node + Pinata backup |
 | MCP Server | Python, FastAPI, Uvicorn |
 | Web3 Integration | web3.py 7.x |
 | Deploy Tooling | Hardhat, ethers.js |
@@ -238,6 +240,8 @@ DAMN-prototype/
 │   └── network_stats.png
 ├── scripts/
 │   └── deploy.js               # Mainnet deploy (Polygon / Base)
+├── tests/
+│   └── test_server.py          # Unit tests (auth, MCP protocol, storage)
 ├── .env.example                # Multi-network config template
 ├── .gitignore
 ├── DAMN.sol                    # Gas-optimized contract (batch writes)

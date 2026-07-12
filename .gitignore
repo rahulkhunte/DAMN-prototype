@@ -1,9 +1,24 @@
-﻿# Node / Hardhat
+# Secrets — never commit
+.env
+.env.*
+!.env.example
+
+# Node / Hardhat
 node_modules/
 artifacts/
 cache/
 typechain-types/
 
-# MCP server
+# Python
 __pycache__/
 *.pyc
+venv/
+.venv/
+.pytest_cache/
+
+# Runtime data
+memory_index.json
+memory_index.json.corrupt
+
+# Jupyter
+.ipynb_checkpoints/
